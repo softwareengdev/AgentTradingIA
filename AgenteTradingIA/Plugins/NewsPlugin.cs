@@ -2,19 +2,23 @@
 using System.ComponentModel;
 using System.Net.Http.Json;
 
-public class NewsPlugin
-{
-    private static readonly HttpClient _http = new();
 
-    [KernelFunction("GetLatestCryptoNews")]
-    [Description("Obtiene noticias reales de cripto gratis (sin API key)")]
-    public async Task<string> GetLatestCryptoNewsAsync()
+namespace AgenteTradingIA.Plugins
+{
+    public class NewsPlugin
     {
-        try
+        private static readonly HttpClient _http = new();
+
+        [KernelFunction("GetLatestCryptoNews")]
+        [Description("Obtiene noticias reales de cripto gratis (sin API key)")]
+        public async Task<string> GetLatestCryptoNewsAsync()
         {
-            var response = await _http.GetFromJsonAsync<dynamic>("https://cryptocurrency.cv/api/news?limit=5&category=bitcoin");
-            return response?.articles?.ToString() ?? "Sin noticias recientes";
+            try
+            {
+                var response = await _http.GetFromJsonAsync<dynamic>("https://cryptocurrency.cv/api/news?limit=5&category=bitcoin");
+                return response?.articles?.ToString() ?? "Sin noticias recientes";
+            }
+            catch { return "Noticias: Mercado alcista en BTC según analistas"; }
         }
-        catch { return "Noticias: Mercado alcista en BTC según analistas"; }
     }
 }
